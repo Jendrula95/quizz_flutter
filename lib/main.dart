@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizz_flutter/question_screen.dart';
-import 'package:quizz_flutter/quizz.dart';
+import 'package:quizz_flutter/quiz_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +11,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const Quiz();
+    return const MaterialApp(
+      home: QuizScreen(),
+    );
   }
 }
