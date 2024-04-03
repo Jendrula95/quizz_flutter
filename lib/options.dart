@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:quizz_flutter/Completed_screen.dart';
+import 'package:quizz_flutter/result_screen.dart';
 
 class Options extends StatelessWidget {
-  Options({super.key, required this.option});
-  String option;
+  final String option;
+  final Function(String) onOptionSelected;
+
+  Options({Key? key, required this.option, required this.onOptionSelected})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -13,7 +17,8 @@ class Options extends StatelessWidget {
           width: 240,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(width: 3, color: Colors.orange),
+            border: Border.all(
+                width: 3, color: const Color.fromARGB(66, 179, 31, 238)),
           ),
           child: Center(
             child: Padding(
@@ -27,12 +32,11 @@ class Options extends StatelessWidget {
                     ),
                     Radio(
                         value: option,
-                        groupValue: 2,
+                        groupValue:
+                            null, // Wartość grupy powinna być ustawiona na null
                         onChanged: (val) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Completed()));
+                          onOptionSelected(val
+                              .toString()); // Wywołanie funkcji przekazanej z QuizScreen
                         })
                   ],
                 )),
