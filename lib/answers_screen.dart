@@ -1,33 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AnswerScreen extends StatelessWidget {
-  const AnswerScreen({super.key});
+  final List<Map<String, dynamic>> questionsAndAnswers;
+
+  const AnswerScreen({super.key, required this.questionsAndAnswers});
 
   @override
   Widget build(BuildContext context) {
-    // Przykładowe pytania, poprawne odpowiedzi i odpowiedzi użytkownika
-    List<Map<String, dynamic>> questionsAndAnswers = [
-      {
-        'question': 'Pytanie 1',
-        'correctAnswer': 'Odpowiedź 1',
-        'userAnswer': 'Odpowiedź użytkownika 1',
-      },
-      {
-        'question': 'Pytanie 2',
-        'correctAnswer': 'Odpowiedź 2',
-        'userAnswer': 'Odpowiedź użytkownika 2',
-      },
-      {
-        'question': 'Pytanie 3',
-        'correctAnswer': 'Odpowiedź 3',
-        'userAnswer': 'Odpowiedź użytkownika 3',
-      },
-      // Tutaj można dodać więcej pytań i odpowiedzi
-    ];
-
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Odpowiedzi'),
+      ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xFFC0D6B0), // Pastelowa zieleń
         ),
         child: ListView.builder(
@@ -43,20 +28,21 @@ class AnswerScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Pytanie ${index + 1}: ${questionsAndAnswers[index]['question']}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         'Poprawna odpowiedź: ${questionsAndAnswers[index]['correctAnswer']}',
-                        style: TextStyle(fontSize: 14, color: Colors.green),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.green),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         'Odpowiedź użytkownika: ${questionsAndAnswers[index]['userAnswer']}',
-                        style: TextStyle(fontSize: 14, color: Colors.red),
+                        style: const TextStyle(fontSize: 14, color: Colors.red),
                       ),
                     ],
                   ),
@@ -65,6 +51,13 @@ class AnswerScreen extends StatelessWidget {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pop(
+              context); // Powrót do poprzedniego ekranu (czyli ResultScreen)
+        },
+        child: const Icon(Icons.arrow_back),
       ),
     );
   }

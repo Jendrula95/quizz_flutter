@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:quizz_flutter/result_screen.dart';
 
 class Options extends StatelessWidget {
   final String option;
   final Function(String) onOptionSelected;
 
-  Options({Key? key, required this.option, required this.onOptionSelected})
-      : super(key: key);
+  const Options(
+      {super.key, required this.option, required this.onOptionSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +31,9 @@ class Options extends StatelessWidget {
                     ),
                     Radio(
                         value: option,
-                        groupValue:
-                            null, // Wartość grupy powinna być ustawiona na null
+                        groupValue: null,
                         onChanged: (val) {
-                          onOptionSelected(val
-                              .toString()); // Wywołanie funkcji przekazanej z QuizScreen
+                          onOptionSelected(val.toString());
                         })
                   ],
                 )),

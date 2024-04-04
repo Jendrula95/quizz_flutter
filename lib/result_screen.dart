@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:quizz_flutter/answers_screen.dart';
 import 'package:quizz_flutter/quiz_screen.dart';
 import 'package:quizz_flutter/start_screen.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({
-    super.key,
-  });
+  final List<Map<String, dynamic>> userAnswers;
+
+  const ResultScreen({super.key, required this.userAnswers});
+
+  int calculateCorrectAnswers() {
+    int correctAnswers = 0;
+    for (var answer in userAnswers) {
+      if (answer['isCorrect'] == true) {
+        correctAnswers++;
+      }
+    }
+    return correctAnswers;
+  }
 
   @override
   Widget build(BuildContext context) {
+    int correctAnswers = calculateCorrectAnswers();
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -61,10 +72,10 @@ class ResultScreen extends StatelessWidget {
                           width: 2,
                         ),
                       ),
-                      child: const Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             'Twój wynik to:',
                             style: TextStyle(
                               fontSize: 18,
@@ -72,10 +83,10 @@ class ResultScreen extends StatelessWidget {
                               color: Colors.black,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
-                            '10 pkt', // tutaj może być zmienna zawierająca liczbę zdobytych punktów
-                            style: TextStyle(
+                            '$correctAnswers pkt / 10', // wyświetlanie liczby poprawnych odpowiedzi
+                            style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.green,
@@ -102,10 +113,12 @@ class ResultScreen extends StatelessWidget {
                         InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AnswerScreen()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AnswerScreen(
+                                    questionsAndAnswers: userAnswers),
+                              ),
+                            );
                           },
                           child: const CircleAvatar(
                             backgroundColor: Colors.blueGrey,

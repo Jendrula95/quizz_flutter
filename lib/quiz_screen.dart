@@ -1,13 +1,12 @@
+import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:quizz_flutter/options.dart';
+
 import 'package:quizz_flutter/result_screen.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({Key? key}) : super(key: key);
+  const QuizScreen({super.key});
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -21,10 +20,11 @@ class _QuizScreenState extends State<QuizScreen> {
   int? selectedAnswerIndex;
   late Timer _timer;
   int _secondRemaining = 20;
+  List<Map<String, dynamic>> userAnswers = [];
 
   Future api() async {
     final response = await http.get(Uri.parse(
-        'https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple'));
+        'https://opentdb.com/api.php?amount=10&category=10&difficulty=hard&type=multiple'));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body)['results'];
       setState(() {
@@ -75,10 +75,8 @@ class _QuizScreenState extends State<QuizScreen> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                              Colors.white.withOpacity(
-                                  0.2), // Bardziej przezroczysty kolor szkła
-                              Colors.white.withOpacity(
-                                  0.1) // Kolor cienia na efekt szkła
+                              Colors.white.withOpacity(0.2),
+                              Colors.white.withOpacity(0.1)
                             ],
                           ),
                           borderRadius: BorderRadius.circular(20),
@@ -147,6 +145,12 @@ class _QuizScreenState extends State<QuizScreen> {
                     onChanged: (int? value) {
                       setState(() {
                         selectedAnswerIndex = value;
+                        userAnswers.add({
+                          'question': responseData[number]['question'],
+                          'correctAnswer': responseData[number]
+                              ['correct_answer'],
+                          'userAnswer': option,
+                        });
                       });
                     },
                   );
@@ -197,19 +201,31 @@ class _QuizScreenState extends State<QuizScreen> {
       completed();
     }
     setState(() {
+      bool isCorrect = shuffledOptions[selectedAnswerIndex!] ==
+          responseData[number]['correct_answer'];
+      if (selectedAnswerIndex != null) {
+        userAnswers.add({
+          'question': responseData[number]['question'],
+          'correctAnswer': responseData[number]['correct_answer'],
+          'userAnswer': shuffledOptions[selectedAnswerIndex!],
+          'isCorrect': isCorrect,
+        });
+      }
       number = number + 1;
       currentQuestionNumber++;
       updateShuffleOption();
       _secondRemaining = 20;
-      selectedAnswerIndex =
-          null; // Resetuj wybraną odpowiedź po przejściu do kolejnego pytania
+      selectedAnswerIndex = null;
     });
   }
 
   void completed() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const ResultScreen()),
+      MaterialPageRoute(
+          builder: (context) => ResultScreen(
+                userAnswers: userAnswers,
+              )),
     );
   }
 

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quizz_flutter/result_screen.dart';
-import 'package:quizz_flutter/quiz_screen.dart';
 import 'package:quizz_flutter/start_screen.dart';
 
 void main() {
@@ -14,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: ResultScreen(),
+      home: StartScreen(),
     );
   }
 }

@@ -13,8 +13,8 @@ class StartScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFC0D6B0), // Jasna pastelowa zieleń
-              Color(0xFF84A98C), // Ciemniejsza pastelowa zieleń
+              Color(0xFFC0D6B0),
+              Color(0xFF84A98C),
             ],
           ),
         ),
